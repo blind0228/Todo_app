@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 function TodoApp() {
   const [input, setInput] = useState('');
@@ -13,6 +15,22 @@ function TodoApp() {
   const handleDelete = (id) => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
+
+
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  const fetchTodos = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/todos');
+      setTodos(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
 
   return (
     <div style={{ padding: '20px' }}>
