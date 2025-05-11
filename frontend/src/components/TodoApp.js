@@ -20,14 +20,15 @@ function TodoApp() {
     }
   };
   
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`http://localhost:5000/todos/${id}`);
-      setTodos(todos.filter(todo => todo.id !== id));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+const handleDelete = async (id) => {
+  try {
+    await axios.delete(`http://localhost:5000/todos/${id}`);
+    setTodos(todos.filter(todo => todo._id !== id));
+  } catch (err) {
+    console.error(err);
+  }
+};
+  
   
 
   useEffect(() => {
@@ -55,9 +56,10 @@ function TodoApp() {
       <button onClick={handleAdd}>추가</button>
 
       <ul>
-        {todos.map(todo => (
-          <li key={todo.id}>
-            {todo.text} <button onClick={() => handleDelete(todo.id)}>삭제</button>
+          {todos.map(todo => (
+          <li key={todo._id}>
+            {todo.text}
+            <button onClick={() => handleDelete(todo._id)}>삭제</button>
           </li>
         ))}
       </ul>
