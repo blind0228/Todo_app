@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
+mongoose.connect(process.env.MONGODB_URI, {});
+
 const app = express();
 const PORT = 5000;
 
