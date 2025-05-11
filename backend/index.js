@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // 라우터
-let todos = [];
+const Todo = require('./models/Todo');
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI, {
@@ -18,22 +18,25 @@ mongoose.connect(process.env.MONGODB_URI, {
     useUnifiedTopology: true,
   }).then(() => console.log('✅ MongoDB 연결 성공')).catch(err => console.error('❌ MongoDB 연결 실패:', err));
 
-app.get('/todos', (req, res) => {
-  res.json(todos);
+app.get('/todos', async (req, res) => {
+const todos = await Todo.find().sort({ createdAt: -1 }); // 최신순 정렬
+res.json(todos);
 });
 
-app.post('/todos', (req, res) => {
+
+app.post('/todos', async (req, res) => {
     const { text } = req.body;
-    const newTodo = { id: Date.now(), text };
-    todos.push(newTodo);
+    const newTodo = new Todo({ text });
+    await newTodo.save();
     res.status(201).json(newTodo);
-  });
-
-app.delete('/todos/:id', (req, res) => {
-const { id } = req.params;
-todos = todos.filter(todo => todo.id !== Number(id));
-res.status(204).send(); // 삭제 성공, 반환할 데이터 없음
 });
+
+app.delete('/todos/:id', async (req, res) => {
+    const { id } = req.params;
+    await Todo.findByIdAndDelete(id);
+    res.status(204).send();
+});
+  
   
 
 app.listen(PORT, () => {
