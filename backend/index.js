@@ -14,6 +14,12 @@ app.get('/todos', (req, res) => {
   res.json(todos);
 });
 
+app.post('/todos', (req, res) => {
+    const { text } = req.body;
+    const newTodo = { id: Date.now(), text };
+    todos.push(newTodo);
+    res.status(201).json(newTodo);
+  });
 
 app.listen(PORT, () => {
   console.log(`서버가 http://localhost:${PORT} 에서 실행 중`);

@@ -16,8 +16,6 @@ function TodoApp() {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
-
-
   useEffect(() => {
     fetchTodos();
   }, []);
