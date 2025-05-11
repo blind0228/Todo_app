@@ -8,9 +8,12 @@ app.use(cors());
 app.use(express.json());
 
 // 라우터
-app.get('/', (req, res) => {
-  res.send('백엔드 서버 동작 중!');
+let todos = [];
+
+app.get('/todos', (req, res) => {
+  res.json(todos);
 });
+
 
 app.listen(PORT, () => {
   console.log(`서버가 http://localhost:${PORT} 에서 실행 중`);
