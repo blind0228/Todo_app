@@ -20,9 +20,15 @@ function TodoApp() {
     }
   };
   
-  const handleDelete = (id) => {
-    setTodos(todos.filter(todo => todo.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/todos/${id}`);
+      setTodos(todos.filter(todo => todo.id !== id));
+    } catch (err) {
+      console.error(err);
+    }
   };
+  
 
   useEffect(() => {
     fetchTodos();
