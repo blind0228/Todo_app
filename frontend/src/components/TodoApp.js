@@ -6,12 +6,20 @@ function TodoApp() {
   const [input, setInput] = useState('');
   const [todos, setTodos] = useState([]);
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (input.trim() === '') return;
-    setTodos([...todos, { text: input, id: Date.now() }]);
-    setInput('');
+  
+    try {
+      const res = await axios.post('http://localhost:5000/todos', {
+        text: input,
+      });
+      setTodos([...todos, res.data]);
+      setInput('');
+    } catch (err) {
+      console.error(err);
+    }
   };
-
+  
   const handleDelete = (id) => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
