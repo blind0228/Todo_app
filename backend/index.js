@@ -1,7 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
-mongoose.connect(process.env.MONGODB_URI, {});
 
 const app = express();
 const PORT = 5000;
@@ -12,6 +11,12 @@ app.use(express.json());
 
 // 라우터
 let todos = [];
+
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }).then(() => console.log('✅ MongoDB 연결 성공')).catch(err => console.error('❌ MongoDB 연결 실패:', err));
 
 app.get('/todos', (req, res) => {
   res.json(todos);
